@@ -1,2 +1,2 @@
-export const base_url = 'http://localhost:5000/api/';
-export const server_url = 'http://localhost:5000';
+export const base_url = 'https://ecommerce-product-backend.onrender.com/api/';
+export const server_url = 'https://ecommerce-product-backend.onrender.com';
