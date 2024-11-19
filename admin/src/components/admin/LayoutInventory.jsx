@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,LikeOutlined,
-  ShoppingCartOutlined,DashboardOutlined,UserOutlined,BorderOuterOutlined, ReadOutlined ,ShopOutlined ,ScheduleOutlined,FormOutlined,PicLeftOutlined, TruckOutlined ,TagsOutlined, LogoutOutlined
+  ShoppingCartOutlined,DashboardOutlined,UserOutlined,BorderOuterOutlined, ReadOutlined ,ShopOutlined ,ScheduleOutlined,FormOutlined,PicLeftOutlined, TruckOutlined ,TagsOutlined, LogoutOutlined,MessageOutlined
 } from "@ant-design/icons";
 import { Button, Flex, Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -116,6 +116,11 @@ const LayoutInventory = () => {
                   label:  <span className="text-lg font-medium">Danh sách nhập hàng</span>,
                 },
               ],
+            },
+            {
+              key: "chat",
+              icon: <MessageOutlined style={{ fontSize: '22px' }} />,
+              label:  <span className="text-lg font-medium">Chat</span>,
             },
             {
               icon: <LogoutOutlined    style={{ fontSize: '22px' }} />,
