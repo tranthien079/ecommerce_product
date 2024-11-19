@@ -26,7 +26,10 @@ const morgan = require('morgan');
 
 dbConnect();
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors({
+    origin: [process.env.CLIENT_URL, process.env.ADMIN_URL], // Chỉ định miền được phép
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Các phương thức HTTP được phép
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
