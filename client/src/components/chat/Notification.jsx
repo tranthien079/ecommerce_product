@@ -96,7 +96,7 @@ const Notification = () => {
               ))
             )}
           </div>
-          {/* <Link className="m-0" to='/sale/chat'>Đi đến trang chat</Link> */}
+          <Link className="m-0" to='/chat'>Đi đến trang chat</Link>
 
         </div>
       )}
