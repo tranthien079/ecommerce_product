@@ -15,6 +15,7 @@ import {
   TruckOutlined,
   TagsOutlined,
   LogoutOutlined,
+  MessageOutlined
 } from "@ant-design/icons";
 import { Button, Flex, Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -220,7 +221,11 @@ const LayoutSale = () => {
                 },
               ],
             },
-
+{
+              key: "chat",
+              icon: <MessageOutlined style={{ fontSize: '22px' }} />,
+              label:  <span className="text-lg font-medium">Chat</span>,
+            },
             {
               icon: <LogoutOutlined style={{ fontSize: "22px" }} />,
               key: "signout",
