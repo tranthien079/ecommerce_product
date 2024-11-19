@@ -9,9 +9,8 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: [process.env.CLIENT_URL, process.env.ADMIN_URL],
-    // origin: [process.env.CLIENT_URL, process.env.ADMIN_URL],
-    methods: ["GET", "POST"],
+    origin: true, // Cho phép tất cả các miền
+    methods: ["GET", "POST"], // Các phương thức HTTP được phép
   },
 });
 
