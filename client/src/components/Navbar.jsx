@@ -103,7 +103,7 @@ const Navbar = () => {
     <div className="flex items-center justify-between py-5 font-medium">
       <Link to="/">
        <img 
-      src="https://stsgroup.org.vn/Templates/SustainableTextileSolutions/Content/Images/logo2.svg" 
+      src="https://res.cloudinary.com/dlj4bcepa/image/upload/v1732072178/logo2_gvv9id.svg" 
       alt="Logo" 
       class="w-36 filter invert"
     />
