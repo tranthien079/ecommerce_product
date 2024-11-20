@@ -39,12 +39,13 @@ const LayoutAdmin = () => {
         collapsed={collapsed}
         style={{ background: colorBgContainer }}
       >
-        <img
-          src="../logoAdmin.svg"
-          alt="logo"
-          className="img-fluid p-4"
-          width="200"
-        />
+        <div class="flex items-center justify-center">
+    <img 
+      src="https://stsgroup.org.vn/Templates/SustainableTextileSolutions/Content/Images/logo2.svg" 
+      alt="Logo" 
+      class="w-36 filter invert"
+    />
+  </div>
         <Menu
           theme="light"
           mode="inline"
