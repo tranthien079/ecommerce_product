@@ -505,6 +505,38 @@ const getUserCart = asyncHandler(async (req, res) => {
   }
 });
 
+const repayment = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  const { id, paymentInfo, totalPrice } = req.body;
+  
+  if (paymentInfo === "momo") {
+    const paymentResult = await createPaymentMomo(totalPrice);
+    
+    if (paymentResult?.resultCode === 0) {
+      const order = await Order.findByIdAndUpdate(
+        id, 
+        { paymentInfo: "momo", paymentOrderId: paymentResult.orderId }, 
+        { new: true }
+      );
+      
+      return res.json({ paymentResult });
+    }
+  }
+  
+  if (paymentInfo === "payos") {
+    const paymentResult = await paymentPayOs(totalPrice);
+    
+    const order = await Order.findByIdAndUpdate(
+      id, 
+      { paymentInfo: "payos", paymentOrderId: paymentResult.orderCode }, 
+      { new: true }
+    );
+    
+    return res.json({ paymentResult });
+  }
+});
+
 const createOrder = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
@@ -893,5 +925,6 @@ module.exports = {
   findUser,
   getUsers,
   getUsersSale,
-  updateMember
+  updateMember,
+  repayment
 };
