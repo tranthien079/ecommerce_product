@@ -52,6 +52,11 @@ export const createOrderApi = async (data) => {
   return response;
 };
 
+export const repaymentApi = async (data) => {
+  const response = await instance.post(`${baseURL}/repayment`, data);
+  return response;
+};
+
 export const getUserOrderApi = async () => {
   const response = await instance.get(`${baseURL}/get-user-orders`);
   return response;
