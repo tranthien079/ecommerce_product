@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
-import { updatePaymentStatusApi,verifyEmailApi, forgotPasswordApi, changePasswordByTokenApi, updateUserInfoApi, registerApi, loginApi, getWishlistApi, addToCartApi, getCartApi, removeProductApi, updateProductApi, createOrderApi,getUserOrderApi, getOrderDetailApi, findUserApi, getUsersApi, updateOrderStatusApi } from "../../api/user";
+import { updatePaymentStatusApi,verifyEmailApi, forgotPasswordApi, changePasswordByTokenApi, updateUserInfoApi, registerApi, loginApi, getWishlistApi, addToCartApi, getCartApi, removeProductApi, updateProductApi, createOrderApi,getUserOrderApi, getOrderDetailApi, findUserApi, getUsersApi, updateOrderStatusApi, repaymentApi } from "../../api/user";
 import { toast } from "react-toastify";
 import { applyCouponApi } from "../../api/coupon";
 const getCustomerFromLocalStorage = localStorage.getItem("user")
@@ -44,6 +44,15 @@ export const verifyEmail = createAsyncThunk("auth/verify", async (data, thunkAPI
 export const applyCoupon = createAsyncThunk("auth/checkout/applycoupon", async (data, thunkAPI) => {
   try {
     const result = await applyCouponApi(data);
+    return result;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error?.message);
+  }
+});
+
+export const repaymentOrder = createAsyncThunk("auth/checkout/repayment", async (data, thunkAPI) => {
+  try {
+    const result = await repaymentApi(data);
     return result;
   } catch (error) {
     return thunkAPI.rejectWithValue(error?.message);
@@ -454,6 +463,21 @@ export const authSlice = createSlice({
         state.appliedCoupon = action.payload;
       })
       .addCase(applyCoupon.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.payload;
+      })
+      .addCase(repaymentOrder.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(repaymentOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.paymentResult = action.payload?.paymentResult;
+      })
+      .addCase(repaymentOrder.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
