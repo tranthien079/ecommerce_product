@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserOrder, updateOrderStatus } from "../redux/user/userSlice";
+import { getUserOrder, repaymentOrder, updateOrderStatus } from "../redux/user/userSlice";
 import { Link } from "react-router-dom";
 import { formatDate, formatPrice } from "../utils/helper";
 import {
@@ -18,12 +18,12 @@ import {
 } from "@material-tailwind/react"; // Import Material Tailwind Tabs
 import { toast } from "react-toastify";
 import Meta from "../components/Meta";
-
+import momo from "../../public/images/momo.webp";
+import payos from "../../public/images/payos.svg";
 const Order = () => {
   const [activeTab, setActiveTab] = useState("tatca");
   const dispatch = useDispatch();
   const orderState = useSelector((state) => state.auth.orderUser);
-
   useEffect(() => {
     dispatch(getUserOrder());
   }, [dispatch]);
@@ -100,8 +100,11 @@ const OrderList = ({ orders }) => {
 
 const OrderDetails = ({ order }) => {
   const [open, setOpen] = useState(false);
+  const [openCheckout, setOpenCheckout] =  useState(false);
+  const [selectPayment, setSelectedPayment] = useState("");
 
   const handleOpen = () => setOpen(!open);
+  const handleOpenCheckout = () => setOpenCheckout(!openCheckout);
   const dispatch = useDispatch();
   const isWithinOneHour = () => {
     const orderTime = new Date(order?.createdAt).getTime(); 
@@ -114,7 +117,6 @@ const OrderDetails = ({ order }) => {
 
     return isWithin;
   };
-  console.log(isWithinOneHour())
 
   const handleCancelOrder = async (id) => {
     const data = { id: id, status: "Đã hủy" };
@@ -122,6 +124,25 @@ const OrderDetails = ({ order }) => {
     await dispatch(getUserOrder());
     setOpen(!open);
     toast.success('Hủy đơn hàng thành công!')
+  };
+
+  const handleCheckoutOrder = async (id, totalPrice) => {
+    const data = { id: id, paymentInfo: selectPayment, totalPrice: totalPrice };
+    console.log(data);
+    if (selectPayment === "momo") {
+      const response =  await dispatch(repaymentOrder(data));
+      if (response?.payload?.paymentResult?.payUrl) {
+        window.location.href = response.payload.paymentResult.payUrl;
+      }
+    } else if (selectPayment === "payos") {
+      const response =  await dispatch(repaymentOrder(data));
+      if (response?.payload?.paymentResult?.checkoutUrl) {
+        window.location.href = response.payload.paymentResult.checkoutUrl;
+      }
+    } else {
+      toast.success('Đổi phương thức thanh toán thành công')
+    }
+    setOpenCheckout(!openCheckout);
   };
 
   const getStatusColor = (status) => {
@@ -196,12 +217,91 @@ const OrderDetails = ({ order }) => {
             </Button>
           </div>
         )}
+        {order.paymentStatus === "Chưa thanh toán" && (
+          <div className="text-end mr-3">
+            <Button onClick={handleOpenCheckout} variant="gradient" color="blue">
+              Thanh toán lại
+            </Button>
+          </div>
+        )}
         <p className="mb-0">Tổng tiền: </p>
         <span className="text-red-500">
           {" "}
           {formatPrice(order.totalPriceAfterDiscount || order.totalPrice)}
         </span>
       </div>
+      <Dialog open={openCheckout} handler={handleOpenCheckout}>
+        <DialogHeader>Chọn phương thức thanh toán</DialogHeader>
+        <DialogBody>
+        <div className="space-y-2">
+                    {/* Momo Payment */}
+                    <div className={`border rounded ${selectPayment === 'momo' ? 'bg-gray-300' : ''}`}>
+                      <label className="flex items-center p-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="paymentInfo"
+                          value="momo"
+                          className="hidden"
+                          onChange={(e) => setSelectedPayment(e.target.value)}
+                        />
+                        <img className="w-8 h-8 mr-2" src={momo} alt="Momo" />
+                        <span>Thanh toán qua Momo</span>
+                      </label>
+                    </div>
+
+                    {/* PayOS Payment */}
+                    <div className={`border rounded ${selectPayment === 'payos' ? 'bg-gray-300' : ''}`}>
+                      <label className="flex items-center p-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="paymentInfo"
+                          value="payos"
+                          className="hidden"
+                          onChange={(e) => setSelectedPayment(e.target.value)}
+                        />
+                        <img className="w-8 h-8 mr-2" src={payos} alt="PayOS" />
+                        <span>Thanh toán qua PayOS</span>
+                      </label>
+                    </div>
+
+                    {/* Cash Payment */}
+                    <div className={`border rounded ${selectPayment === 'cash' ? 'bg-gray-300' : ''}`}>
+                      <label className="flex items-center p-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="paymentInfo"
+                          value="cash"
+                          className={`hidden `}
+                          onChange={(e) => setSelectedPayment(e.target.value)}
+                        />
+                        <img
+                          className="w-8 h-8 mr-2"
+                          src="https://png.pngtree.com/png-clipart/20210530/original/pngtree-cash-payments-for-cod-with-hand-holding-money-and-box-png-image_6373958.jpg"
+                          alt="COD"
+                        />
+                        <span>Thanh toán khi nhận hàng</span>
+                      </label>
+                    </div>
+                  </div>
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpenCheckout}
+            className="mr-1"
+          >
+            <span>Hủy bỏ</span>
+          </Button>
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={() => handleCheckoutOrder(order._id, order?.totalPrice)}
+          >
+            <span>Xác nhận</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
 
       <Dialog open={open} handler={handleOpen}>
         <DialogHeader>Hủy đơn hàng</DialogHeader>
