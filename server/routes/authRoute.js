@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { checkStatusPayment, applyCoupon,getOrderById,getMyOrders, updateProductQuantity,removeProductCart, updateOrderStatus, createOrder, getUserCart, addUserCart, createAddressUser, getWishList, loginAdmin, verifyEmail, resetPassword, forgotPasswordToken, updatePassword, handleRefreshToken, unblockUser, blockUser, createUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser, logOut, getAllOrder, getUsers, findUser, getUsersSale, updateMember } = require('../controllers/userController')
+const { checkStatusPayment, applyCoupon,getOrderById,getMyOrders, updateProductQuantity,removeProductCart, updateOrderStatus, createOrder, getUserCart, addUserCart, createAddressUser, getWishList, loginAdmin, verifyEmail, resetPassword, forgotPasswordToken, updatePassword, handleRefreshToken, unblockUser, blockUser, createUser, loginUser, getAllUsers, getUserById, deleteUser, updateUser, logOut, getAllOrder, getUsers, findUser, getUsersSale, updateMember, repayment } = require('../controllers/userController')
 const { authMiddleWare, isAdmin } = require('../middlewares/authMiddleware')
 const {  uploadImages, deleteImages } = require('../controllers/uploadController');
 const { createPaymentMomo, handleCallbackMomo, checkTransactionStatusMomo } = require('../controllers/paymentMomoController');
@@ -18,6 +18,7 @@ router.delete('/delete-product-cart/:cartId', authMiddleWare, removeProductCart)
 router.put('/update-product-cart/:cartId/:newQuantity', authMiddleWare, updateProductQuantity)
 router.get('/cart', authMiddleWare, getUserCart)
 router.post('/checkout/applycoupon', authMiddleWare, applyCoupon)
+router.post('/repayment',authMiddleWare , repayment)
 router.post('/cart/create-order', authMiddleWare, createOrder)
 router.get('/checkout/payment-online/:orderId', authMiddleWare, checkStatusPayment)
 router.get('/get-user-orders', authMiddleWare, getMyOrders)
