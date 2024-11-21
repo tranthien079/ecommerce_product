@@ -186,7 +186,7 @@ const OrderItem = () => {
               </Typography>
               <Typography variant="small">
               
-                <img className=" w-[60px] rounded-full object-cover object-center" src=  {orderDetails.paymentMethod == 'cash' ? 'https://png.pngtree.com/png-clipart/20210530/original/pngtree-cash-payments-for-cod-with-hand-holding-money-and-box-png-image_6373958.jpg' : orderDetails.paymentMethod == 'Momo' ? momo : payos } alt="payment" />
+                <img className=" w-[60px] rounded-full object-cover object-center" src=  {orderDetails.paymentMethod == 'cash' ? 'https://png.pngtree.com/png-clipart/20210530/original/pngtree-cash-payments-for-cod-with-hand-holding-money-and-box-png-image_6373958.jpg' : orderDetails.paymentMethod == 'momo' ? momo : payos } alt="payment" />
               </Typography>
             </div>
             <div className="mt-4 flex justify-between">
