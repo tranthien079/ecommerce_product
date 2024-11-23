@@ -27,12 +27,13 @@ const ReceiptPage = () => {
   };
   const columns = [
     {
-      title: 'ID',
-      dataIndex: '_id',
-      key: '_id',
-      // align: 'center',
-      render: (text) => <a>{text}</a>,
-    },  
+      title: 'Stt',
+      dataIndex: '0',
+      key: '0',
+      render: (text, record, dataIndex) => (
+        <span>{dataIndex + 1}</span>
+      ),  
+    },
     {
       title: 'Người nhập',
       dataIndex: 'userId',
