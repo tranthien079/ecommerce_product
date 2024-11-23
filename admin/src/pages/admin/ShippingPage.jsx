@@ -7,7 +7,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const CategoryPage = () => {
+const ShippingPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getShip())
@@ -26,13 +26,6 @@ const CategoryPage = () => {
     }
   };
   const columns = [
-    {
-      title: 'ID',
-      dataIndex: '_id',
-      key: '_id',
-      // align: 'center',
-      render: (text) => <a>{text}</a>,
-    },  
     {
       title: 'Name',
       dataIndex: 'name',
@@ -87,4 +80,4 @@ const CategoryPage = () => {
     )
 }
 
-export default CategoryPage
+export default ShippingPage
