@@ -32,6 +32,7 @@ const AddBCategoryPage = () => {
     if (getBCategoryId && gotBCategory) {
       form.setFieldsValue({
         name: gotBCategory?.name,
+        description: gotBCategory?.description
       });
     }
   }, [gotBCategory, getBCategoryId, form]);
