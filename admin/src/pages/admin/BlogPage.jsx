@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { getBlog, deleteBlog } from '../../redux/blog/blogSlice';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const BlogPage = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const BlogPage = () => {
       .unwrap()
       .then(() => {
         dispatch(getBlog());
+        toast.success("Xóa bài viết thành công")
       })
       .catch((error) => {
         console.error('Failed to delete blog:', error);
