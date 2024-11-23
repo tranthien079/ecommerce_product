@@ -27,13 +27,6 @@ const CouponPage = () => {
   };
   const columns = [
     {
-      title: 'ID',
-      dataIndex: '_id',
-      key: '_id',
-      // align: 'center',
-      render: (text) => <a>{text}</a>,
-    },  
-    {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
@@ -103,4 +96,4 @@ const CouponPage = () => {
     )
 }
 
-export default CouponPage
+export default CouponPage;
