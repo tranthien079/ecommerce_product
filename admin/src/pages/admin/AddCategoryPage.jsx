@@ -25,6 +25,7 @@ const AddCategoryPage = () => {
     if (getCategoryId && gotCategory) {
       form.setFieldsValue({
         name: gotCategory?.name,
+        description: gotCategory?.description,
       });
     }
   }, [gotCategory, getCategoryId, form]);
