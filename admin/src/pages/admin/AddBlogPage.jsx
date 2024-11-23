@@ -51,8 +51,9 @@ const AddBlogPage = () => {
   useEffect(() => {
     if (getBlogId && gotBlog) {
       form.setFieldsValue({
+    
         title: gotBlog?.title,
-        categoryId: gotBlog?.categoryId,
+        categoryId: gotBlog?.categoryId?._id,
         description: gotBlog?.description,
         content: gotBlog?.content,
       });
@@ -86,7 +87,7 @@ const AddBlogPage = () => {
   return (
     <div>
       <div className="bg-white p-5 rounded-lg">
-        <h3 className="font-semibold">Thêm bài viết</h3>
+        <h3 className="font-semibold">{getBlogId ? "Sửa bài viết" : "Thêm bài viết"}</h3>
         <Form
           form={form}
           name="register"
