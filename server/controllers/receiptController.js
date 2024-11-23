@@ -39,9 +39,12 @@ const createReceipt = asyncHandler(async (req, res) => {
 
 const updateReceipt = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const { _id } = req.user;
+
+  const data = {...req.body, userId: _id}
   validateMongoDbId(id);
   try {
-    const updatedReceipt = await Receipt.findByIdAndUpdate(id, req.body, {
+    const updatedReceipt = await Receipt.findByIdAndUpdate(id, data, {
       new: true,
     });
     // for (const detail of updatedReceipt.receiptDetails) {
@@ -63,7 +66,6 @@ const updateReceipt = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
-
 const deleteReceipt = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
