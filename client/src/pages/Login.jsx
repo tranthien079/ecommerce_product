@@ -14,7 +14,6 @@ const loginSchema = yup.object({
     .required("Vui lòng nhập email"),
   password: yup
     .string()
-    .min(6, "Mật khẩu phải ít nhất 6 ký tự")
     .required("Vui lòng nhập mật khẩu"),
 });
 
