@@ -135,13 +135,9 @@ const AddUserPage = () => {
                     required: !getUserId, // Only required if creating a new user
                     message: "Vui lòng nhập mật khẩu!",
                   },
-                  // {
-                  //   min: 6,
-                  //   message: "Mật khẩu phải dài ít nhất 6 ký tự!",
-                  // },
                   {
-                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-                    message: "Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ thường, chữ in hoa, số và ký tự đặc biệt!",
+                    pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                    message: "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ thường, chữ in hoa, số và ký tự đặc biệt!",
                   },
                 ]}
                 hasFeedback
@@ -158,13 +154,18 @@ const AddUserPage = () => {
                 label="Số điện thoại"
                 rules={[
                   {
-                    min: 10,
-                    message: "Số điện thoại ít nhất 10 số!",
-                  },
-                  {
                     required: true,
                     message: "Vui lòng nhập số điện thoại!",
                   },
+                  {
+                    pattern: /^(032|033|034|035|036|037|038|039|056|058|059|070|076|077|078|079|081|082|083|084|085|086|087|088|089|090|091|092|093|094|096|097|098|099)[0-9]{7,8}$/,
+                    message: "Số điện thoại không hợp lệ!",
+                  },
+                  {
+                    min: 10,
+                    max: 11,
+                    message: "Số điện thoại phải từ 10 đến 11 số!",
+                  }
                 ]}
                 hasFeedback
               >
