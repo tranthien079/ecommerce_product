@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Space, Table, Tooltip, Button, Select, Input, Tag, Typography } from 'antd';
+import { Space, Table, Tooltip, Button, Select, Input, Tag, Typography, DatePicker } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrder, updateOrderStatus } from '../../redux/order/orderSlice';
 import { EyeOutlined, SearchOutlined } from '@ant-design/icons';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import Highlighter from "react-highlight-words";
 import momo from "../../../public/images/momo.webp";
 import payos from "../../../public/images/payos.svg";
+import dayjs from 'dayjs';
 const OrderPage = () => {
   const dispatch = useDispatch();
 
@@ -116,6 +117,71 @@ const OrderPage = () => {
         text
       ),
   });
+
+  const getColumnSearchPropsDate = (dataIndex) => {
+    return {
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <DatePicker.RangePicker
+            style={{ width: "100%", marginBottom: 8 }}
+            value={
+              selectedKeys[0]
+                ? [dayjs(selectedKeys[0][0]), dayjs(selectedKeys[0][1])]
+                : null
+            }
+            onChange={(dates) => {
+              if (dates) {
+                setSelectedKeys([
+                  [
+                    dates[0].startOf("day").toISOString(),
+                    dates[1].endOf("day").toISOString(),
+                  ],
+                ]);
+              } else {
+                setSelectedKeys([]);
+              }
+            }}
+          />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button
+              type="button"
+              onClick={() => {
+                clearFilters();
+                confirm();
+              }}
+              style={{ width: 90 }}
+            >
+              Reset
+            </button>
+            <button
+              type="button"
+              onClick={() => confirm()}
+              style={{ width: 90 }}
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      ),
+      onFilter: (value, record) => {
+        if (!value || !record[dataIndex]) return false;
+
+        const recordDate = dayjs(record[dataIndex]);
+        const [startDate, endDate] = value;
+
+        return recordDate.isAfter(startDate) && recordDate.isBefore(endDate);
+      },
+      filterIcon: (filtered) => (
+        <span style={{ color: filtered ? "#1890ff" : undefined }}>🗓</span>
+      ),
+    };
+  };
+
   const columns = [
     {
       title: 'Khách hàng',
@@ -261,6 +327,7 @@ const OrderPage = () => {
           </span>
         );
       },
+      ...getColumnSearchPropsDate('createdAt'),
     },
     {
       title: "Action",
