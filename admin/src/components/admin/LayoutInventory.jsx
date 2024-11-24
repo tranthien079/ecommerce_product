@@ -103,21 +103,6 @@ const LayoutInventory = () => {
                 },
               ],
             },
-    
-            {
-              icon: <ScheduleOutlined   style={{ fontSize: '22px' }} />,
-              label:  <span className="text-lg font-medium">Quản lý nhập hàng</span>,
-              children: [
-                {
-                  key: "receipt",
-                  label:  <span className="text-lg font-medium">Thêm nhập hàng</span>,
-                },
-                {
-                  key: "receipts",
-                  label:  <span className="text-lg font-medium">Danh sách nhập hàng</span>,
-                },
-              ],
-            },
             {
               key: "chat",
               icon: <MessageOutlined style={{ fontSize: '22px' }} />,
