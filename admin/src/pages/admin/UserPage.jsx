@@ -149,14 +149,14 @@ const UserPage = () => {
 
   const columns = [
     {
-      title: "First Name",
+      title: "Họ đệm",
       dataIndex: "firstname",
       key: "firstname",
       render: (text) => <a>{text}</a>,
       ...getColumnSearchProps('firstname'),
     },
     {
-      title: "Last Name",
+      title: "Tên",
       dataIndex: "lastname",
       key: "lastname",
       ...getColumnSearchProps('lastname'),
@@ -180,7 +180,7 @@ const UserPage = () => {
       ...getColumnSearchProps('mobile'),
     },
     {
-      title: "Role",
+      title: "Vai trò",
       key: "role",
       dataIndex: "role",
     
