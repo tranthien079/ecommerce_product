@@ -3,13 +3,28 @@ const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
 
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, path.join(__dirname, "../public/images/"));
+//   },
+//   filename: function (req, file, cb) {
+//     const uniquesuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+//     cb(null, file.fieldname + "-" + uniquesuffix + ".jpeg");
+//   },
+// });
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../public/images/"));
+    const uploadPath = path.join(__dirname, "../public/images/");
+    // Tạo thư mục nếu chưa tồn tại
+    fs.mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
     const uniquesuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniquesuffix + ".jpeg");
+    // Lấy đuôi file gốc thay vì hardcode .jpeg
+    const ext = path.extname(file.originalname) || '.jpeg';
+    cb(null, file.fieldname + "-" + uniquesuffix + ext);
   },
 });
 
