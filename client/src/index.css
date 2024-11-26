@@ -8,6 +8,9 @@ a.active hr{
     display: block;
 }
 
+.ql-align-center img {
+    margin: auto;
+}
 
 body {
   font-family: "Poppins", sans-serif!important;
