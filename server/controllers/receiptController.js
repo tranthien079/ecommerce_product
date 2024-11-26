@@ -88,7 +88,7 @@ const getReceiptById = asyncHandler(async (req, res) => {
 });
 const getAllReceipts = asyncHandler(async (req, res) => {
   try {
-    const getallReceipt = await Receipt.find().sort({ expiry: 1 }).populate('userId').populate('supplierId').populate('receiptDetails.productId');
+    const getallReceipt = await Receipt.find().sort({ createdAt: -1 }).populate('userId').populate('supplierId').populate('receiptDetails.productId');
     res.json(getallReceipt);
   } catch (error) {
     throw new Error(error);
