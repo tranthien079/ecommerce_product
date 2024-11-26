@@ -116,9 +116,14 @@ const AddReceiptPage = () => {
     const newReceipt = {
       userId: JSON.parse(localStorage.getItem('user'))?._id,
       supplierId: form.getFieldValue("supplierId"),
-      importDate: form.getFieldValue("importDate") ? moment(form.getFieldValue("importDate")) : null,
+      importDate: form.getFieldValue("importDate") 
+      ? form.getFieldValue("importDate").isValid()
+        ? form.getFieldValue("importDate").$d
+        : null
+      : null,
       receiptDetails: tableData
     };
+    console.log(newReceipt)
     if (isEditing) {
       dispatch(updateReceipt({ id, data: newReceipt }));
     } else {
@@ -192,6 +197,7 @@ const AddReceiptPage = () => {
           onFinish={onFinish}
           initialValues={{
             layout: "vertical",
+            importDate: null // Hoặc moment() nếu muốn mặc định là ngày hiện tại
           }}
           layout="vertical"
           scrollToFirstError
