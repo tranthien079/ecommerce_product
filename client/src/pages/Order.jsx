@@ -217,7 +217,7 @@ const OrderDetails = ({ order }) => {
             </Button>
           </div>
         )}
-        {order.paymentStatus === "Chưa thanh toán" && order.orderStatus === "Chờ xác nhận" (
+        {order.paymentStatus === "Chưa thanh toán" && order.orderStatus === "Chờ xác nhận" && (
           <div className="text-end mr-3">
             <Button onClick={handleOpenCheckout} variant="gradient" color="blue">
               Thanh toán lại
