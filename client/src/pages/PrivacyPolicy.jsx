@@ -1,8 +1,9 @@
 import React from "react";
-
+import Meta from "../components/Meta";
 const PrivacyPolicy = () => {
   return (
     <div className="article-detail snipcss-oSP52">
+       <Meta title="Chính sách bảo mật" />
     <h2>
       <strong>Căn cứ pháp lý</strong>
     </h2>
