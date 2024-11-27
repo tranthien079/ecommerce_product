@@ -141,6 +141,7 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
+
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
     // Filter
@@ -150,42 +151,57 @@ const getAllProducts = asyncHandler(async (req, res) => {
 
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    let query = Product.find(JSON.parse(queryStr));
+    
+    // Base query với điều kiện lọc
+    let baseQuery = Product.find(JSON.parse(queryStr));
 
-    // Sorting by brandId and categoryId
+    // Sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(",").join(" ");
-      query = query.sort(sortBy);
+      baseQuery = baseQuery.sort(sortBy);
     } else {
-      query = query.sort("-createdAt");
+      baseQuery = baseQuery.sort("-createdAt");
     }
 
-    // Limit the fields
+    // Fields selection
     if (req.query.fields) {
       const fields = req.query.fields.split(",").join(" ");
-      query = query.select(fields);
+      baseQuery = baseQuery.select(fields);
     } else {
-      query = query.select("-__v");
+      baseQuery = baseQuery.select("-__v");
     }
+
+    // Đếm tổng số sản phẩm với điều kiện lọc
+    const productCount = await Product.find(JSON.parse(queryStr)).countDocuments();
 
     // Pagination
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit);
-    // const limit = parseInt(req.query.limit) || 8;
-
     const skip = (page - 1) * limit;
-    query = query.skip(skip).limit(limit);
 
-    // Count documents without populate
-    const productCount = await Product.countDocuments();
+    if (productCount === 0) {
+      return res.json({
+        success: true,
+        page,
+        limit,
+        totalProducts: 0,
+        totalPages: 0,
+        products: [],
+      });
+    }
 
-    if (skip >= productCount) throw new Error("Trang này không tồn tại!");
-
-    // Calculate total pages
+    // Kiểm tra trang có tồn tại
     const totalPages = Math.ceil(productCount / limit);
-    
-    // Execute query with populate
-    const products = await query.populate("brandId").populate("categoryId");
+    if (skip >= productCount) {
+      throw new Error("Trang này không tồn tại!");
+    }
+
+    // Thực hiện query với pagination và populate
+    const products = await baseQuery
+      .skip(skip)
+      .limit(limit)
+      .populate("brandId")
+      .populate("categoryId");
 
     res.json({
       success: true,
@@ -199,6 +215,64 @@ const getAllProducts = asyncHandler(async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 });
+// const getAllProducts = asyncHandler(async (req, res) => {
+//   try {
+//     // Filter
+//     const queryObj = { ...req.query };
+//     const excludeFields = ["page", "sort", "limit", "skip", "fields"];
+//     excludeFields.forEach((el) => delete queryObj[el]);
+
+//     let queryStr = JSON.stringify(queryObj);
+//     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+//     let query = Product.find(JSON.parse(queryStr));
+
+//     // Sorting by brandId and categoryId
+//     if (req.query.sort) {
+//       const sortBy = req.query.sort.split(",").join(" ");
+//       query = query.sort(sortBy);
+//     } else {
+//       query = query.sort("-createdAt");
+//     }
+
+//     // Limit the fields
+//     if (req.query.fields) {
+//       const fields = req.query.fields.split(",").join(" ");
+//       query = query.select(fields);
+//     } else {
+//       query = query.select("-__v");
+//     }
+
+//     // Pagination
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit);
+//     // const limit = parseInt(req.query.limit) || 8;
+
+//     const skip = (page - 1) * limit;
+//     query = query.skip(skip).limit(limit);
+
+//     // Count documents without populate
+//     const productCount = await Product.countDocuments();
+
+//     if (skip >= productCount) throw new Error("Trang này không tồn tại!");
+
+//     // Calculate total pages
+//     const totalPages = Math.ceil(productCount / limit);
+    
+//     // Execute query with populate
+//     const products = await query.populate("brandId").populate("categoryId");
+
+//     res.json({
+//       success: true,
+//       page,
+//       limit,
+//       totalProducts: productCount,
+//       totalPages,
+//       products,
+//     });
+//   } catch (error) {
+//     res.status(400).json({ success: false, message: error.message });
+//   }
+// });
 
 const searchProducts =  asyncHandler(async (req, res) => {
   const { name } = req.query;
