@@ -1,8 +1,9 @@
 import React from 'react'
-
+import Meta from "../components/Meta";
 const CheckoutPolicy = () => {
   return (
     <div>
+       <Meta title="Chính sách bảo mật" />
         <div id="yody-page-info-content" className="container mx-auto snipcss-nwrxd">
   <div className="article-detail snipcss0-0-0-1">
     <p className="snipcss0-1-1-2">
