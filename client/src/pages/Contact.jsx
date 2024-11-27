@@ -59,13 +59,11 @@ const Contact = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Google Maps Embed */}
         <div className="mb-8 w-full">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.857562417006!2d106.68492447573628!3d10.822210558346056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528e5496d03cf%3A0xa5b8e7395ec636b9!2zMTIgTmd1eeG7hW4gVsSDbiBC4bqjbywgUGjGsOG7nW5nIDQsIEjhu5MgQ2jDrCBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1724077778397!5m2!1svi!2s"
-            className="w-full h-96 border-0 rounded-lg shadow-md"
+         
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.5383987660434!2d106.72173382334341!3d10.770014166358603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317525f50ef61f35%3A0x7859967bd3302bf7!2zQ8SDbiBo4buZIGNhbyBj4bqlcCBTYXJpY2EgQ29uZG9taW5pdW0gLSBraHUgxJHDtCB0aOG7iyBTYWxh!5e0!3m2!1svi!2s!4v1732706253432!5m2!1svi!2s"    className="w-full h-96 border-0 rounded-lg shadow-md"
             allowFullScreen=""
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+            referrerPolicy="no-referrer-when-downgrade"></iframe>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
