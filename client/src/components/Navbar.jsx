@@ -118,10 +118,6 @@ const Navbar = () => {
           <p>SẢN PHẨM</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
         </NavLink>
-        <NavLink to="/about" className="flex flex-col items-center gap-1">
-          <p>VỀ CHÚNG TÔI</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
-        </NavLink>
         <NavLink to="/contact" className="flex flex-col items-center gap-1">
           <p>LIÊN HỆ</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
@@ -321,13 +317,7 @@ const Navbar = () => {
           >
             Sản phẩm
           </NavLink>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border"
-            to="/about"
-          >
-            Về chúng tôi
-          </NavLink>
+        
           <NavLink
             onClick={() => setVisible(false)}
             className="py-2 pl-6 border"
@@ -351,6 +341,20 @@ const Navbar = () => {
               >
                 Thanh toán
               </NavLink>
+                <NavLink
+                  onClick={() => setVisible(false)}
+                  className="py-2 pl-6 border"
+                  to="/account/orders"
+                >
+                  Đơn hàng
+                </NavLink>
+                <NavLink
+                  onClick={() => setVisible(false)}
+                  className="py-2 pl-6 border"
+                  to="/account"
+                >
+                  Hồ sơ
+                </NavLink>
               <NavLink
                 onClick={() => handleLogout()}
                 className="py-2 pl-6 border"
