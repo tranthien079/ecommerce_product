@@ -29,6 +29,13 @@ import ResetPassword from "./pages/ResetPassword";
 import Chat from "./pages/Chat";
 import { ChatContextProvider } from "./context/ChatContext";
 import { useSelector } from "react-redux";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import SizeBoard from "./pages/SizeBoard";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import CheckoutPolicy from "./pages/CheckoutPolicy";
+
 
 
 const App = () => {
@@ -64,6 +71,11 @@ const App = () => {
           <Route path="order/:id" element={<OrderItem />} />
         </Route>
         <Route path="/checkout" element={<PlaceOrder />} />
+        <Route path="/bang-size-chuan" element={<SizeBoard />} />
+        <Route path="/chinh-sach-bao-mat" element={<PrivacyPolicy />} />
+        <Route path="/chinh-sach-giao-nhan-hang-online" element={<CheckoutPolicy />} />
+
+
       </Routes>
       <Footer />
     </ChatContextProvider>
