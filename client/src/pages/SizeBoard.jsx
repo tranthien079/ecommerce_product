@@ -1,8 +1,9 @@
 import React from 'react'
-
+import Meta from "../components/Meta";
 const SizeBoard = () => {
   return (
     <>
+       <Meta title="Bảng size" />
     <div className="relative pb-11 snipcss-xNo1g">
   <div id="yody-page-info-breadcrumb" className="container mx-auto md:pb-5">
     <div
