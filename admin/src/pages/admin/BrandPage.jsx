@@ -27,9 +27,16 @@ const BrandPage = () => {
   };
   const columns = [
     {
-      title: 'Name',
+      title: 'Tên thương hiệu',
       dataIndex: 'name',
       key: 'name',
+      // align: 'center',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Mô tả',
+      dataIndex: 'description',
+      key: 'description',
       // align: 'center',
       render: (text) => <a>{text}</a>,
     },
