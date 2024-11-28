@@ -25,6 +25,7 @@ const AddBrandPage = () => {
     if (getBrandId && gotBrand) {
       form.setFieldsValue({
         name: gotBrand?.name,
+        description: gotBrand?.description
       });
     }
   }, [gotBrand, getBrandId, form]);
@@ -80,6 +81,13 @@ const AddBrandPage = () => {
             hasFeedback
           >
             <Input placeholder="Nhập tên thương hiệu" />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label="Mô tả"
+
+          >
+            <Input placeholder="Nhập mô tả" />
           </Form.Item>
           <Form.Item>
             <Button type="" htmlType="submit">
