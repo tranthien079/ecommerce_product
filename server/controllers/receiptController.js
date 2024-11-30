@@ -6,7 +6,6 @@ const Product = require("../models/productModel");
 const createReceipt = asyncHandler(async (req, res) => {
   try {
     const newReceipt = await Receipt.create(req.body);
-
     const productUpdates = {};
 
     for (const detail of newReceipt.receiptDetails) {
@@ -20,8 +19,7 @@ const createReceipt = asyncHandler(async (req, res) => {
         const variant = product.variants.find(v => v.sku === detail.productSku);
 
         if (variant) {
-          variant.stock = detail.quantity;
-          console.log(variant.stock, detail.quantity)
+          variant.stock = (variant.stock || 0) + detail.quantity;
         }
       }
     }
@@ -33,6 +31,66 @@ const createReceipt = asyncHandler(async (req, res) => {
     res.json(newReceipt);
   } catch (error) {
     throw new Error(error);
+  }
+});
+
+const cancelReceipt = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    // Tìm receipt cần hủy
+    const receipt = await Receipt.findById(id);
+    
+    if (!receipt) {
+      return res.status(404).json({ message: "Không tìm thấy phiếu nhập" });
+    }
+
+    if (receipt.status === 'Đã hủy') {
+      return res.status(400).json({ message: "Phiếu nhập đã được hủy trước đó" });
+    }
+
+    const productUpdates = {};
+
+    for (const detail of receipt.receiptDetails) {
+      if (!productUpdates[detail.productId]) {
+        productUpdates[detail.productId] = await Product.findById(detail.productId);
+      }
+
+      const product = productUpdates[detail.productId];
+
+      if (product) {
+        const variant = product.variants.find(v => v.sku === detail.productSku);
+
+        if (variant) {
+          if ((variant.stock || 0) < detail.quantity) {
+            throw new Error('Không thể hủy nhập hàng do có sản phẩm không đủ tồn kho để hủy');
+          }
+
+          variant.stock = (variant.stock || 0) - detail.quantity;
+        }
+      }
+    }
+
+    // Lưu lại thông tin sản phẩm
+    for (const productId in productUpdates) {
+      await productUpdates[productId].save();
+    }
+
+    // Cập nhật trạng thái của receipt
+    receipt.status = 'Đã hủy';
+    await receipt.save();
+
+    res.json({ 
+      message: "Hủy phiếu nhập thành công",
+      receipt: receipt 
+    });
+
+  } catch (error) {
+    console.error('Lỗi hủy phiếu nhập:', error);
+    res.status(500).json({ 
+      message: "Có lỗi xảy ra khi hủy phiếu nhập",
+      error: error.message 
+    });
   }
 });
 
@@ -66,6 +124,7 @@ const updateReceipt = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
 const deleteReceipt = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
@@ -100,4 +159,5 @@ module.exports = {
   deleteReceipt,
   getReceiptById,
   getAllReceipts,
+  cancelReceipt,
 };
