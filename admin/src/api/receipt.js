@@ -21,8 +21,8 @@ export const createReceiptApi = async (data) => {
   return response;
 };
 
-export const updateReceiptApi = async ({ id, data }) => {
-  const response = await instance.put(`${baseURL}/${id}`, data);
+export const updateReceiptApi = async (id) => {
+  const response = await instance.put(`${baseURL}/${id}`);
   return response;
 };
 
