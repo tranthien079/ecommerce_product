@@ -38,9 +38,9 @@ export const getReceiptById = createAsyncThunk("receipt/get-receipt-by-id", asyn
       }
   });
 
-export const updateReceipt = createAsyncThunk("receipt/update-receipt", async ({ id, data }, thunkAPI) => {
+export const updateReceipt = createAsyncThunk("receipt/update-receipt", async (id, thunkAPI) => {
   try {
-    const result = await updateReceiptApi({ id, data });
+    const result = await updateReceiptApi(id);
     return result;
   } catch (error) {
     return thunkAPI.rejectWithValue(error?.message);
