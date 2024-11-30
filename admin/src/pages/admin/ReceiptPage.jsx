@@ -229,7 +229,7 @@ const ReceiptPage = () => {
           <Space>
             {
               record?.status !== "Đã hủy" ? (<Popconfirm
-                title="Bạn có muốn xóa nhập hàng này?"
+                title="Bạn có muốn hủy nhập hàng này?"
                 onConfirm={() => handleDelete(record)}
                 okText="Xác nhận"
                 cancelText="Hủy bỏ"
