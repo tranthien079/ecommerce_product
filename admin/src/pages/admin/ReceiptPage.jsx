@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react'
 import { Space, Table, Tag, Popconfirm, Tooltip, Button, Typography, Image, Input, DatePicker } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from 'react';
-import { getReceipt, deleteReceipt } from '../../redux/receipt/receiptSlice';
-import { EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons'
+import { getReceipt, deleteReceipt, updateReceipt } from '../../redux/receipt/receiptSlice';
+import { EditOutlined, DeleteOutlined, SearchOutlined, EyeOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Highlighter from 'react-highlight-words';
@@ -20,8 +20,8 @@ const ReceiptPage = () => {
 
   const handleDelete = async (record) => {
     try {
-      await dispatch(deleteReceipt(record._id)).unwrap();
-      toast.success('Xóa nhập hàng thành công');
+      await dispatch(updateReceipt(record._id)).unwrap();
+      toast.success('Hủy nhập hàng thành công');
       dispatch(getReceipt());
     } catch (error) {
       console.log(error)
@@ -219,24 +219,40 @@ const ReceiptPage = () => {
         // align: 'center',
         ...getColumnSearchPropsDate('importDate')
       },
+      {
+        title: 'Trạng thái',
+        dataIndex: 'status',
+        key: 'status',
+        // align: 'center',
+        ...getColumnSearchProps('status'),
+        render: (_, record) => (
+          <Space>
+            {
+              record?.status !== "Đã hủy" ? (<Popconfirm
+                title="Bạn có muốn xóa nhập hàng này?"
+                onConfirm={() => handleDelete(record)}
+                okText="Xác nhận"
+                cancelText="Hủy bỏ"
+              >
+                  <Button type="primary" > Hủy phiếu
+              </Button>
+              </Popconfirm>) : record?.status
+            }
+          </Space>
+        ),
+      },
     {
-      title: "Action",
+      title: "Thao tác",
       key: "action",
       width: 150,
       render: (_, record) => (
         <Space>
           <Link to={`/inventory/receipt/${record._id}`}>
-            <Button icon={<EditOutlined />} />
+            <Button
+              className="hover:!border-yellow-400 hover:!text-yellow-400"
+              icon={<EyeOutlined />}
+            />
           </Link>
-
-          <Popconfirm
-            title="Bạn có muốn xóa nhập hàng này?"
-            onConfirm={() => handleDelete(record)}
-            okText="Xác nhận"
-            cancelText="Hủy bỏ"
-          >
-              <Button type="primary" icon={<DeleteOutlined />} danger />
-          </Popconfirm>
         </Space>
       ),
     },
