@@ -48,7 +48,7 @@ const AddReceiptPage = () => {
   const location = useLocation();
   const productData = useSelector((state) => state.products.products);
   const supplierData = useSelector((state) => state.suppliers.Suppliers);
-  
+
   const newReceipt = useSelector((state) => state.receipts);
   const { isSuccess, createdReceipt, gotReceipt, updatedReceipt } = newReceipt;
 
@@ -63,15 +63,17 @@ const AddReceiptPage = () => {
   //   }
   // };
   const handleProductChange = (value) => {
-    const selectedProduct = productData.find((product) => product._id === value);
+    const selectedProduct = productData.find(
+      (product) => product._id === value
+    );
     setSelectedProduct(selectedProduct);
-    
+
     if (selectedProduct && selectedProduct.variants) {
       // Lọc những sku có stock là 0
       const zeroStockSkus = selectedProduct.variants
-        .filter((variant) => variant.stock === 0)
+        // .filter((variant) => variant.stock === 0)
         .map((variant) => variant.sku);
-  
+
       setSkuOptions(zeroStockSkus);
       setSelectedSku(zeroStockSkus[0]);
     }
@@ -88,14 +90,16 @@ const AddReceiptPage = () => {
         importDate: moment(gotReceipt.importDate),
         userId: gotReceipt.userId,
       });
-      setTableData(gotReceipt.receiptDetails.map((detail, index) => ({
-        key: index + 1,
-        productId: detail.productId,
-        productName: detail.productName,
-        productSku: detail.productSku,
-        quantity: detail.quantity,
-        price: detail.price,
-      })));
+      setTableData(
+        gotReceipt.receiptDetails.map((detail, index) => ({
+          key: index + 1,
+          productId: detail.productId,
+          productName: detail.productName,
+          productSku: detail.productSku,
+          quantity: detail.quantity,
+          price: detail.price,
+        }))
+      );
     }
   }, [gotReceipt, isEditing, form]);
 
@@ -114,16 +118,16 @@ const AddReceiptPage = () => {
 
   const handleSave = () => {
     const newReceipt = {
-      userId: JSON.parse(localStorage.getItem('user'))?._id,
+      userId: JSON.parse(localStorage.getItem("user"))?._id,
       supplierId: form.getFieldValue("supplierId"),
-      importDate: form.getFieldValue("importDate") 
-      ? form.getFieldValue("importDate").isValid()
-        ? form.getFieldValue("importDate").$d
-        : null
-      : null,
-      receiptDetails: tableData
+      importDate: form.getFieldValue("importDate")
+        ? form.getFieldValue("importDate").isValid()
+          ? form.getFieldValue("importDate").$d
+          : null
+        : null,
+      receiptDetails: tableData,
     };
-    console.log(newReceipt)
+    console.log(newReceipt);
     if (isEditing) {
       dispatch(updateReceipt({ id, data: newReceipt }));
     } else {
@@ -141,10 +145,22 @@ const AddReceiptPage = () => {
       form.resetFields();
       setTableData([]);
       dispatch(resetState());
-      toast.success(isEditing ? "Cập nhật nhập hàng thành công" : "Thêm nhập hàng thành công");
+      toast.success(
+        isEditing
+          ? "Cập nhật nhập hàng thành công"
+          : "Thêm nhập hàng thành công"
+      );
       navigate("/inventory/receipts");
     }
-  }, [isSuccess, createdReceipt, updatedReceipt, navigate, dispatch, form, isEditing]);
+  }, [
+    isSuccess,
+    createdReceipt,
+    updatedReceipt,
+    navigate,
+    dispatch,
+    form,
+    isEditing,
+  ]);
 
   const columns = [
     {
@@ -166,7 +182,14 @@ const AddReceiptPage = () => {
       title: "Giá",
       dataIndex: "price",
       key: "price",
-      render: (price) => <span>{ new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)}</span>,
+      render: (price) => (
+        <span>
+          {new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(price)}
+        </span>
+      ),
     },
     {
       title: "Hành động",
@@ -177,9 +200,10 @@ const AddReceiptPage = () => {
             title="Bạn có chắc chắn muốn xóa?"
             onConfirm={() => handleDelete(record.key)}
           >
-            <Button type="link" danger icon={<DeleteOutlined />}>
+           {!isEditing && <Button type="link" danger icon={<DeleteOutlined />}>
               Xóa
             </Button>
+           } 
           </Popconfirm>
         ) : null,
     },
@@ -189,7 +213,7 @@ const AddReceiptPage = () => {
     <div>
       <div className="bg-white p-5 rounded-lg ">
         <h3 className="font-semibold">
-          {isEditing ? "Sửa nhập hàng" : "Thêm nhập hàng"}
+          {isEditing ? "Chi tiết nhập hàng" : "Thêm nhập hàng"}
         </h3>
         <Form
           form={form}
@@ -197,7 +221,7 @@ const AddReceiptPage = () => {
           onFinish={onFinish}
           initialValues={{
             layout: "vertical",
-            importDate: null // Hoặc moment() nếu muốn mặc định là ngày hiện tại
+            importDate: null, // Hoặc moment() nếu muốn mặc định là ngày hiện tại
           }}
           layout="vertical"
           scrollToFirstError
@@ -233,8 +257,10 @@ const AddReceiptPage = () => {
               },
               {
                 validator: (_, value) => {
-                  if (value && moment(value).isAfter(moment(), 'day')) {
-                    return Promise.reject('Ngày nhập không được lớn hơn ngày hiện tại!');
+                  if (value && moment(value).isAfter(moment(), "day")) {
+                    return Promise.reject(
+                      "Ngày nhập không được lớn hơn ngày hiện tại!"
+                    );
                   }
                   return Promise.resolve();
                 },
@@ -248,7 +274,9 @@ const AddReceiptPage = () => {
               }}
               placeholder="Chọn ngày nhập"
               format="YYYY-MM-DD"
-              disabledDate={(current) => current && current > moment().endOf('day')}
+              disabledDate={(current) =>
+                current && current > moment().endOf("day")
+              }
             />
           </Form.Item>
 
@@ -317,10 +345,10 @@ const AddReceiptPage = () => {
                 ]}
               >
                 <InputNumber
-                   min={1} 
-                   step={1} 
-                   precision={0}
-                placeholder="Nhập số lượng"
+                  min={1}
+                  step={1}
+                  precision={0}
+                  placeholder="Nhập số lượng"
                   style={{
                     width: "100%",
                   }}
@@ -339,8 +367,8 @@ const AddReceiptPage = () => {
                 ]}
               >
                 <InputNumber
-                  min={1} 
-                  step={1} 
+                  min={1}
+                  step={1}
                   precision={0}
                   formatter={(value) =>
                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -356,26 +384,31 @@ const AddReceiptPage = () => {
           </Row>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
-              {isEditing ? "Cập nhật sản phẩm" : "Thêm sản phẩm"}
+          {!isEditing && <Button type="primary" htmlType="submit">
+          Thêm sản phẩm
             </Button>
+          }
           </Form.Item>
         </Form>
 
         <Table columns={columns} dataSource={tableData} />
 
-        <div style={{ marginTop: "20px" }}>
+        {/* <div style={{ marginTop: "20px" }}>
           <h4>JSON của bảng:</h4>
           <pre>{JSON.stringify(tableData, null, 2)}</pre>
-        </div>
+        </div> */}
 
-        <Button
-          type="primary"
-          onClick={handleSave}
-          style={{ marginTop: "20px" }}
-        >
-          {isEditing ? "Cập nhật phiếu nhập hàng" : "Lưu phiếu nhập hàng"}
-        </Button>
+        {isEditing ? (
+          ""
+        ) : (
+          <Button
+            type="primary"
+            onClick={handleSave}
+            style={{ marginTop: "20px" }}
+          >
+            Lưu phiếu nhập hàng
+          </Button>
+        )}
       </div>
     </div>
   );
