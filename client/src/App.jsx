@@ -29,7 +29,9 @@ import ResetPassword from "./pages/ResetPassword";
 import Chat from "./pages/Chat";
 import { ChatContextProvider } from "./context/ChatContext";
 import { useSelector } from "react-redux";
-
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 import SizeBoard from "./pages/SizeBoard";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CheckoutPolicy from "./pages/CheckoutPolicy";
@@ -52,7 +54,7 @@ const App = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:id" element={<BlogItem />} />
         <Route path="/product/:id" element={<ProductItem />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat" element={userState?._id ? <Chat /> : <Login />} />
 
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
@@ -61,9 +63,9 @@ const App = () => {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/wishlist" element={userState?._id ? <Wishlist /> : <Login />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
-        <Route path="/account" element={<Account />}>
+        <Route path="/account" element={userState?._id ? <Account /> : <Login />}>
           <Route index element={<Profile />} />
           <Route path="orders" element={<Order />} />
           <Route path="order/:id" element={<OrderItem />} />
