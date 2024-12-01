@@ -29,9 +29,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Chat from "./pages/Chat";
 import { ChatContextProvider } from "./context/ChatContext";
 import { useSelector } from "react-redux";
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
+
 import SizeBoard from "./pages/SizeBoard";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import CheckoutPolicy from "./pages/CheckoutPolicy";
