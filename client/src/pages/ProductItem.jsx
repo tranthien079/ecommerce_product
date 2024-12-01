@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserWishlist } from "../redux/user/userSlice";
@@ -24,6 +24,7 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import Meta from "../components/Meta";
+import ProductImagesSlider from "../components/ProductImageSlider";
 
 const ProductItem = () => {
   const [selectSize, setSelectedSize] = useState(null);
@@ -33,6 +34,7 @@ const ProductItem = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const getProductId = location.pathname.split("/")[2];
   const wishlistState = useSelector(
     (state) => state?.auth?.userWishlist?.wishlist
@@ -143,6 +145,9 @@ const ProductItem = () => {
     }
     return [];
   };
+  const handleLogin = () => {
+    navigate('/login')
+  }
   // thêm vào giỏ hàng
   const addCart = () => {
     if (selectColor == null) {
@@ -212,9 +217,24 @@ const ProductItem = () => {
     <div>
       <Meta title={productState?.name} />
       <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
+      <div style={{
+            height: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }}>
+            <div style={{
+                width: '500px',
+                backgroundColor: '#fff',
+                padding: '20px'
+            }}>
+                <ProductImagesSlider  images ={productState?.images}/>
+            </div>
+        </div>
         {/* Product Data */}
         <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
           {/* Product Images */}
+      
           <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
             <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[10%] w-full">
               {productState?.images?.map((image, index) => (
@@ -384,8 +404,8 @@ const ProductItem = () => {
             >
               ADD TO CART
             </button> */}
-            <button
-              onClick={addCart}
+         <button
+              onClick={ authState?._id ?  addCart : handleLogin}
               className="w-full bg-black text-white py-3 rounded hover:bg-gray-800"
             >
               <svg
@@ -403,10 +423,11 @@ const ProductItem = () => {
                 />
               </svg>
               Thêm vào giỏ
-            </button>
+            </button> 
+          
             {!wishlistState?.some(
                     (item) => item._id === getProductId
-                  ) && (
+                  ) && authState?._id && (
             <button
               onClick={() => addToWL(productState?._id)}
               className="w-full bg-gray-300 text-black py-3 mt-2 rounded hover:bg-gray-400"
