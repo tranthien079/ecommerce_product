@@ -24,7 +24,7 @@ import {
   Spinner,
 } from "@material-tailwind/react";
 import Meta from "../components/Meta";
-import ProductImagesSlider from "../components/ProductImageSlider";
+
 
 const ProductItem = () => {
   const [selectSize, setSelectedSize] = useState(null);
@@ -217,20 +217,7 @@ const ProductItem = () => {
     <div>
       <Meta title={productState?.name} />
       <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
-      <div style={{
-            height: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-        }}>
-            <div style={{
-                width: '500px',
-                backgroundColor: '#fff',
-                padding: '20px'
-            }}>
-                <ProductImagesSlider  images ={productState?.images}/>
-            </div>
-        </div>
+   
         {/* Product Data */}
         <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
           {/* Product Images */}
