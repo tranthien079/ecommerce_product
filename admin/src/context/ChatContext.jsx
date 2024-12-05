@@ -88,7 +88,7 @@ export const ChatContextProvider = ({ children, user }) => {
 
   useEffect(() => {
     const getUsers = async () => {
-      const response = await axios.get(`${base_url}user`);
+      const response = await axios.get(`${base_url}user/get-all-user`);
 
       const pChats = response?.data?.filter((u) => {
         let isChatCreated = false;
