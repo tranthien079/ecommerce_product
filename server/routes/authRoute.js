@@ -24,7 +24,7 @@ router.get('/checkout/payment-online/:orderId', authMiddleWare, checkStatusPayme
 router.get('/get-user-orders', authMiddleWare, getMyOrders)
 router.get('/get-user-orders/:id', authMiddleWare, getOrderById)
 router.get('/get-all-orders', authMiddleWare, getAllOrder)
-router.put('/update-order/:id', authMiddleWare, isAdmin, updateOrderStatus)
+router.put('/update-order/:id', authMiddleWare, updateOrderStatus)
 
 
 // router.post('/payment-zalopay', createPaymentMomo);
