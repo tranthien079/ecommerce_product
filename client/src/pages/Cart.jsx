@@ -109,7 +109,7 @@ const Cart = () => {
           <div className=" text-end">
             <Link
               to='/checkout'
-              className="bg-green-700 hover:bg-green-400 text-white text-3xl my-8 px-8 py-3 w-[200px]"
+              className="bg-green-700 hover:bg-green-400 text-white text-2xl my-8 px-8 py-3 w-[200px]"
             >
               Thanh toán
             </Link>
