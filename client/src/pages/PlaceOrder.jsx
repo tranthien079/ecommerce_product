@@ -220,7 +220,7 @@ const PlaceOrder = () => {
               <div className="mr-2">
                 <h3 className="website-name"></h3>
                 <h4 className="text-lg font-semibold mb-2">Thông tin liên hệ</h4>
-                <p className="text-gray-600 mb-4">tranminhthien (abc@gmail.com)</p>
+               
 
                 <div className="flex flex-row gap-4">
                   <div className="w-1/2">
