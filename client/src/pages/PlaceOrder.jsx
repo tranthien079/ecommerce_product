@@ -430,7 +430,7 @@ const PlaceOrder = () => {
                       onBlur={formik1.handleBlur("coupon")}
                     />
                     <button
-                      className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                      className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-700"
                       type="button"
                       onClick={formik1.handleSubmit}
                     >
@@ -517,8 +517,8 @@ const PlaceOrder = () => {
                 </div>
 
                 <div className="flex justify-between items-center py-4">
-                  <h4 className="font-medium">Tổng tiền:</h4>
-                  <h5 className="font-medium">
+                  <h4 className="font-semibold">Tổng tiền:</h4>
+                  <h5 className="font-semibold">
                     {coupon > 0
                       ? formatPrice(
                           Number(totalAmount) +
@@ -533,7 +533,7 @@ const PlaceOrder = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
+                  className="w-full py-2 bg-green-700 hover:bg-green-400 text-white text-2xl rounded-md hover:bg-gray-800 transition-colors"
                 >
                   Đặt hàng
                 </button>
