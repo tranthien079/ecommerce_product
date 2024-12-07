@@ -414,7 +414,7 @@ const PlaceOrder = () => {
 
               <div className="py-4">
                 <div className="flex justify-between items-center mb-4">
-                  <p>Thành tiền</p>
+                  <p className="text-2xl font-semibold">Thành tiền</p>
                   <p>{formatPrice(totalAmount)}</p>
                 </div>
 
@@ -517,7 +517,7 @@ const PlaceOrder = () => {
                 </div>
 
                 <div className="flex justify-between items-center py-4">
-                  <h4 className="font-semibold">Tổng tiền:</h4>
+                  <h4 className="font-semibold text-2xl">Tổng tiền:</h4>
                   <h5 className="font-semibold">
                     {coupon > 0
                       ? formatPrice(
