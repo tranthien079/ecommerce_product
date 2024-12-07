@@ -110,19 +110,19 @@ const Navbar = () => {
       </Link>
 
       <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
-        <NavLink to="/" className="flex flex-col items-center gap-1">
-          <p>HOME</p>
+        <NavLink to="/" className="flex flex-col items-center gap-1 font-semibold">
+           <p>HOME</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
         </NavLink>
-        <NavLink to="/collection" className="flex flex-col items-center gap-1">
+        <NavLink to="/collection" className="flex flex-col items-center gap-1 font-semibold">
           <p>SẢN PHẨM</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
+          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 " />
         </NavLink>
-        <NavLink to="/contact" className="flex flex-col items-center gap-1">
+        <NavLink to="/contact" className="flex flex-col items-center gap-1 font-semibold">
           <p>LIÊN HỆ</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
         </NavLink>
-        <NavLink to="/blog" className="flex flex-col items-center gap-1">
+        <NavLink to="/blog" className="flex flex-col items-center gap-1 font-semibold">
           <p>BÀI VIẾT</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
         </NavLink>
