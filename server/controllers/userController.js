@@ -17,6 +17,7 @@ const {
   checkTransactionStatusMomo,
 } = require("./paymentMomoController");
 const { paymentPayOs } = require("./paymentPayOSController");
+const sendOrderConfirmationMail = require("./mailOrder");
 
 // Hàm tạo người dùng mới
 const createUser = asyncHandler(async (req, res) => {
@@ -31,8 +32,8 @@ const createUser = asyncHandler(async (req, res) => {
   if (!findUserEmail) {
     //Tạo người dùng mới nếu đã có email không tồn tại
     const newUser = await User.create({
-      ...req.body, 
-      verificationToken, 
+      ...req.body,
+      verificationToken,
       verificationTokenExpires: Date.now() + 30 * 60 * 1000, // Set the expiration time to 30 hours from now
     });
     const from = "Xác thực email";
@@ -93,7 +94,8 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const findAdmin = await User.findOne({ email: email, isActive: true });
 
-  if (findAdmin?.role == "user") throw new Error("Bạn không có quyền truy cập trang này!");
+  if (findAdmin?.role == "user")
+    throw new Error("Bạn không có quyền truy cập trang này!");
 
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(findAdmin?._id);
@@ -227,15 +229,15 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 const updateMember = asyncHandler(async (req, res) => {
-  const { userId } = req.params
-  validateMongoDbId(userId)
+  const { userId } = req.params;
+  validateMongoDbId(userId);
   try {
-      const updatedMember = await User.findByIdAndUpdate(userId, req.body, { new: true });
-      res.json(updatedMember);
-  } catch (error) {
-      
-  }
-})
+    const updatedMember = await User.findByIdAndUpdate(userId, req.body, {
+      new: true,
+    });
+    res.json(updatedMember);
+  } catch (error) {}
+});
 
 // Hàm xóa người dùng
 const deleteUser = asyncHandler(async (req, res) => {
@@ -250,7 +252,6 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
-
 
 const blockUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -282,7 +283,7 @@ const unblockUser = asyncHandler(async (req, res) => {
         new: true,
       }
     );
-    console.log(unblock)
+    console.log(unblock);
 
     res.json(unblock);
   } catch (error) {
@@ -350,7 +351,7 @@ const resetPassword = asyncHandler(async (req, res) => {
 });
 
 // Hàm xử lý khi đã nhập token dùng xác minh tài khoản kích hoạt email....
-const verifyEmail =asyncHandler( async (req, res) => {
+const verifyEmail = asyncHandler(async (req, res) => {
   const { code } = req.body;
   console.log(req.body);
   try {
@@ -509,30 +510,30 @@ const repayment = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   const { id, paymentInfo, totalPrice } = req.body;
-  
+
   if (paymentInfo === "momo") {
     const paymentResult = await createPaymentMomo(totalPrice);
-    
+
     if (paymentResult?.resultCode === 0) {
       const order = await Order.findByIdAndUpdate(
-        id, 
-        { paymentInfo: "momo", paymentOrderId: paymentResult.orderId }, 
+        id,
+        { paymentInfo: "momo", paymentOrderId: paymentResult.orderId },
         { new: true }
       );
-      
+
       return res.json({ paymentResult });
     }
   }
-  
+
   if (paymentInfo === "payos") {
     const paymentResult = await paymentPayOs(totalPrice);
-    
+
     const order = await Order.findByIdAndUpdate(
-      id, 
-      { paymentInfo: "payos", paymentOrderId: paymentResult.orderCode }, 
+      id,
+      { paymentInfo: "payos", paymentOrderId: paymentResult.orderCode },
       { new: true }
     );
-    
+
     return res.json({ paymentResult });
   }
 });
@@ -592,7 +593,7 @@ const createOrder = asyncHandler(async (req, res) => {
           totalPrice,
           paymentInfo,
           typeDelivery,
-          paymentOrderId: paymentResult.orderId, 
+          paymentOrderId: paymentResult.orderId,
         });
 
         if (order) {
@@ -600,9 +601,8 @@ const createOrder = asyncHandler(async (req, res) => {
         }
 
         return res.json({ paymentResult });
-      } 
-    } else if(paymentInfo === "payos") {
-
+      }
+    } else if (paymentInfo === "payos") {
       const paymentResult = await paymentPayOs(totalPrice);
 
       const order = await Order.create({
@@ -613,7 +613,7 @@ const createOrder = asyncHandler(async (req, res) => {
         totalPrice,
         paymentInfo,
         typeDelivery,
-        paymentOrderId: paymentResult.orderCode, 
+        paymentOrderId: paymentResult.orderCode,
       });
 
       if (order) {
@@ -645,43 +645,70 @@ const createOrder = asyncHandler(async (req, res) => {
 });
 
 const checkStatusPayment = asyncHandler(async (req, res) => {
-  const { orderId } = req.params; 
-  console.log(orderId)
-  try {
-    // Check trạng thái thanh toán momo
-    const checkStatus = await checkTransactionStatusMomo({orderId});
-    const pendingOrder = await Order.findOne({ paymentOrderId:orderId });
-    if(pendingOrder) {
-      if (checkStatus.resultCode === 0) {
+  const { orderId } = req.params;
 
-        const order = await Order.updateOne(
-          { paymentOrderId: orderId }, 
-          { paymentStatus: "Đã thanh toán" } 
+  console.log(orderId);
+  try {
+    // Check trạng thái thanh toán
+    const checkStatus = await checkTransactionStatusMomo({ orderId });
+    const pendingOrder = await Order.findOne({ paymentOrderId: orderId });
+
+    if (pendingOrder) {
+      let order;
+      if (checkStatus.resultCode === 0) {
+        await Order.updateOne(
+          { paymentOrderId: orderId },
+          { paymentStatus: "Đã thanh toán" }
         );
-  
+
+        order = await Order.findOne({ paymentOrderId: orderId })
+          .populate("userId")
+          .populate("typeDelivery")
+          .populate("couponId")
+          .populate({
+            path: "orderItems",
+            populate: {
+              path: "productId",
+              model: "Product", // Make sure this matches your Product model name
+            },
+          });
+        console.log(order);
+        await sendOrderConfirmationMail(order);
+
         return res.json(order);
       } else {
-  
-        const order = await Order.updateOne(
-          { paymentOrderId: orderId }, 
-          { paymentStatus: "Đã thanh toán" } 
+        await Order.updateOne(
+          { paymentOrderId: orderId },
+          { paymentStatus: "Đã thanh toán" }
         );
-  
+
+        order = await Order.findOne({ paymentOrderId: orderId })
+          .populate("userId")
+          .populate("typeDelivery")
+          .populate("couponId")
+          .populate({
+            path: "orderItems",
+            populate: {
+              path: "productId",
+              model: "Product", // Make sure this matches your Product model name
+            },
+          });
+        console.log(order);
+
+        await sendOrderConfirmationMail(order);
+
         return res.json(order);
       }
     } else {
       return res.json({ message: "Đơn hàng không tồn tại hoặc đã thanh toán" });
     }
-   
   } catch (error) {
     throw new Error(error.message);
   }
 });
 
-
-
 // const finalizeOrder = asyncHandler(async (req, res) => {
-//   const { orderId } = req.params; 
+//   const { orderId } = req.params;
 //   console.log(orderId)
 //   try {
 //     // Check trạng thái thanh toán momo
@@ -705,7 +732,7 @@ const checkStatusPayment = asyncHandler(async (req, res) => {
 //       }
 
 //       return res.json(order);
-//     } 
+//     }
 //   } catch (error) {
 //     throw new Error(error.message);
 //   }
@@ -761,7 +788,7 @@ const getAllOrder = asyncHandler(async (req, res) => {
 const applyCoupon = asyncHandler(async (req, res) => {
   const { coupon } = req.body;
   const { _id } = req.user;
-  
+
   validateMongoDbId(_id);
 
   const validCoupon = await Coupon.findOne({ name: coupon });
@@ -773,7 +800,10 @@ const applyCoupon = asyncHandler(async (req, res) => {
   const currentDate = new Date();
   const expiryDate = new Date(validCoupon.expiry);
 
-  if (expiryDate < currentDate || expiryDate.toDateString() === currentDate.toDateString()) {
+  if (
+    expiryDate < currentDate ||
+    expiryDate.toDateString() === currentDate.toDateString()
+  ) {
     throw new Error("Mã giảm giá đã hết hạn!");
   }
 
@@ -816,8 +846,8 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
 
     const updateData = { orderStatus: status, employeeId: _id };
 
-    if (status === 'Hoàn thành') {
-      updateData.paymentStatus = 'Đã thanh toán';
+    if (status === "Hoàn thành") {
+      updateData.paymentStatus = "Đã thanh toán";
     }
 
     if (status === "Đã hủy") {
@@ -842,14 +872,11 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
       }
     }
 
-    const updatedOrder = await Order.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true }
-    );
+    const updatedOrder = await Order.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
     res.json(updatedOrder);
-
   } catch (error) {
     throw new Error(error.message || "Failed to update order status");
   }
@@ -857,13 +884,13 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
 
 const findUser = async (req, res) => {
   const userId = req.params.userId;
-try {
-  let user = await User.findById(userId).select('-password');
-  if (!user) return res.status(400).json("Người dùng không tồn tại.");
-  res.status(200).json(user);
-} catch (error) {
-  res.status(500).json(error);
-}
+  try {
+    let user = await User.findById(userId).select("-password");
+    if (!user) return res.status(400).json("Người dùng không tồn tại.");
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 };
 
 // const getUsers = async (req, res) => {
@@ -877,7 +904,7 @@ try {
 
 const getUsers = async (req, res) => {
   try {
-    let user = await User.find({ role: { $ne: 'user' } }).select('-password');
+    let user = await User.find({ role: { $ne: "user" } }).select("-password");
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json(error);
@@ -886,7 +913,7 @@ const getUsers = async (req, res) => {
 
 const getUsersSale = async (req, res) => {
   try {
-    let user = await User.find({ role: 'sale' }).select('-password');
+    let user = await User.find({ role: "sale" }).select("-password");
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json(error);
@@ -926,5 +953,5 @@ module.exports = {
   getUsers,
   getUsersSale,
   updateMember,
-  repayment
+  repayment,
 };
