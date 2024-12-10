@@ -307,21 +307,6 @@ const DashboardPage = () => {
         );
       },
     },
-    {
-      title: "Action",
-      key: "action",
-      width: 150,
-      render: (_, record) => (
-        <Space>
-          <Link to={`/admin/order/${record._id}`}>
-            <Button
-              className="hover:!border-yellow-400 hover:!text-yellow-400"
-              icon={<EyeOutlined />}
-            />
-          </Link>
-        </Space>
-      ),
-    },
   ];
 
   return (
