@@ -12,7 +12,7 @@ const paymentPayOs = async (totalPrice, req, res) => {
 
     const order = {
       amount: totalPrice, // số tiền cần thanh toán
-      description: "mua mi", // mô tả đơn hàng
+      description: "Thanh toan payOS // mô tả đơn hàng
       orderCode, // mã đơn hàng (ensure it's unique)
       returnUrl: `${process.env.CLIENT_URL}/payment-success`, 
       cancelUrl: `${process.env.CLIENT_URL}/checkout`,
