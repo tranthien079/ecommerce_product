@@ -113,7 +113,7 @@ const sendOrderConfirmationMail = asyncHandler(async (pendingOrder) => {
             </tr>
             <tr>
             <td>Trạng thái thanh toán:</td>
-            <td style="text-align: right;">Đã thanh toán</td>
+            <td style="text-align: right; color: green;">Đã thanh toán</td>
           </tr>
           </table>
         </section>
