@@ -10,13 +10,30 @@ const BlogItem = () => {
   const blogState = useSelector(state => state?.blog?.gotBlog);
   const location = useLocation();
   const getBlogId = location.pathname.split('/')[2];
-
+ const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    if (getBlogId) {
-      dispatch(getBlogById(getBlogId));
+      if (getBlogId) {
+      const getBlog = async () => {
+        setIsLoading(true);
+        try {
+          await dispatch(getBlogById(getBlogId));
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false); 
+        }
+      };
+      getBlog();
     }
   }, [dispatch, getBlogId]);
 
+   if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spinner size="xl" color="blue" className="text-center" />
+      </div>
+    );
+  }
   return (
     <div>
       <Meta title={blogState?.title} />
