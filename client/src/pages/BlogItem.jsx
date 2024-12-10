@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getBlogById, resetState } from "../redux/blog/blogSlice";
 import { formatDate } from '../utils/helper';
 import Meta from '../components/Meta';
-
+import {
+  Spinner
+} from "@material-tailwind/react";
 const BlogItem = () => {
   const dispatch = useDispatch();
   const blogState = useSelector(state => state?.blog?.gotBlog);
