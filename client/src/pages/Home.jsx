@@ -36,7 +36,7 @@ const Home = () => {
       <Hero />
       <OurPolicy />
       <div className="mb-10">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl border-b-4 mb-10">Sản phẩm khuyến mãi</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl border-b-4 mb-10">Sản phẩm khuyến mãi</h2>
         <div className="grid grid-cols-1 md:grid-cols-6 sm:grid-cols-12 gap-8 mt-6">
           <ProductCard
             data={
@@ -50,7 +50,7 @@ const Home = () => {
         </div>
       </div>
       <div className="mb-10">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl border-b-4 mb-10">Sản phẩm mới</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl border-b-4 mb-10">Sản phẩm mới</h2>
         <div className="grid grid-cols-1 md:grid-cols-6 sm:grid-cols-12 gap-8 mt-6">
           <ProductCard
             data={
@@ -64,7 +64,7 @@ const Home = () => {
         </div>
       </div>
       <div className="mb-10">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl border-b-4 mb-10">Bài viết gần đây</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl border-b-4 mb-10">Bài viết gần đây</h2>
         <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-4  gap-8 mt-6">
           {blogState &&
             blogState?.map((item, index) => {
