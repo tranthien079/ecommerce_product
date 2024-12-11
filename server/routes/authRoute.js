@@ -31,7 +31,7 @@ router.put('/update-order/:id', authMiddleWare, updateOrderStatus)
 // router.post('/payment-payos', paymentPayOs);
 
 router.get('/find/:userId', findUser)
-router.get('/get-all-user', getUsers)
+router.get('/get-all-user', getAllUsers)
 router.get('/', getUsersSale)
 
 router.post('/login', loginUser)
