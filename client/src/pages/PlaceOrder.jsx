@@ -35,7 +35,7 @@ const PlaceOrder = () => {
   const [selectShip, setSelectedShip] = useState(0);
   const [selectPayment, setSelectedPayment] = useState("");
   const [coupon, setCoupon] = useState(0);
-
+  const [couponId, setCouponId] = useState(null);
   const [data, setData] = useState([]);
   const [cities, setCities] = useState([]);
   const [districts, setDistricts] = useState([]);
@@ -67,6 +67,7 @@ const PlaceOrder = () => {
   useEffect(() => {
     if (applyCouponState?.discount) {
       setCoupon(applyCouponState.discount);
+      setCouponId(applyCouponState?._id);
     }
   }, [applyCouponState]);
 
@@ -135,6 +136,7 @@ const PlaceOrder = () => {
           : Number(totalAmount) + Number(selectShip?.price_ship || 0),
           // totalPriceAfterDiscount: totalAmount,
           typeDelivery: selectShip?.ship_id,
+          couponId: couponId
         };
         if (selectPayment === "momo") {
           const response = await dispatch(createOrder(data));
@@ -220,7 +222,7 @@ const PlaceOrder = () => {
               <div className="mr-2">
                 <h3 className="website-name"></h3>
                 <h4 className="text-lg font-semibold mb-2">Thông tin liên hệ</h4>
-               
+                <p className="text-gray-600 mb-4">tranminhthien (abc@gmail.com)</p>
 
                 <div className="flex flex-row gap-4">
                   <div className="w-1/2">
@@ -414,7 +416,7 @@ const PlaceOrder = () => {
 
               <div className="py-4">
                 <div className="flex justify-between items-center mb-4">
-                  <p className="text-2xl font-semibold">Thành tiền</p>
+                  <p>Thành tiền</p>
                   <p>{formatPrice(totalAmount)}</p>
                 </div>
 
@@ -518,7 +520,7 @@ const PlaceOrder = () => {
 
                 <div className="flex justify-between items-center py-4">
                   <h4 className="font-semibold text-2xl">Tổng tiền:</h4>
-                  <h5 className="font-semibold">
+                  <h5 className="font-semibold text-2xl">
                     {coupon > 0
                       ? formatPrice(
                           Number(totalAmount) +
@@ -533,7 +535,7 @@ const PlaceOrder = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-2 bg-green-700 hover:bg-green-400 text-white text-2xl rounded-md hover:bg-gray-800 transition-colors"
+                  className="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-400 transition-colors"
                 >
                   Đặt hàng
                 </button>
