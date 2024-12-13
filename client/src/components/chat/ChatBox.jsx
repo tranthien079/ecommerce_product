@@ -50,9 +50,10 @@ const ChatBox = () => {
             >
               <span>{message?.text}</span>
               <span className="message-footer text-xs text-gray-900 block">
-                {DateTime.fromISO(message?.createdAt)
-                  .setLocale("vi")
-                  .toRelative({ base: DateTime.now() })}
+                {   DateTime.fromMillis(message?.createdAt)
+                  .setLocale('vi')
+                  .toFormat('dd/MM/yyyy HH:mm:ss')
+             }
               </span>
             </div>
           );
