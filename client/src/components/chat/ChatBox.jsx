@@ -52,7 +52,7 @@ const ChatBox = () => {
               <span className="message-footer text-xs text-gray-900 block">
                 {DateTime.fromISO(message?.createdAt)
                   .setLocale("vi")
-                  .toRelative()}
+                  .toRelative({ base: DateTime.now() })}
               </span>
             </div>
           );
