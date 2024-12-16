@@ -70,7 +70,6 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logoutAuth());
-    dispatch(resetState());
     navigate("/login");
   };
 
@@ -105,18 +104,22 @@ const Navbar = () => {
        <img 
       src="https://res.cloudinary.com/dlj4bcepa/image/upload/v1732072178/logo2_gvv9id.svg" 
       alt="Logo" 
-      class="w-36 filter invert"
+      className="w-36 filter invert"
     />
       </Link>
 
       <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
         <NavLink to="/" className="flex flex-col items-center gap-1 font-semibold">
-           <p>TRANG CHỦ</p>
+          <p>HOME</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
         </NavLink>
         <NavLink to="/collection" className="flex flex-col items-center gap-1 font-semibold">
           <p>SẢN PHẨM</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 " />
+          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
+        </NavLink>
+        <NavLink to="/about" className="flex flex-col items-center gap-1 font-semibold">
+          <p>VỀ CHÚNG TÔI</p>
+          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
         </NavLink>
         <NavLink to="/contact" className="flex flex-col items-center gap-1 font-semibold">
           <p>LIÊN HỆ</p>
@@ -205,7 +208,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {authState._id ? (
+        {authState?._id ? (
           <>
             <div className="hidden sm:hidden md:flex md:gap-4 lg:flex lg:gap-4 items-center">
               <svg
@@ -215,7 +218,7 @@ const Navbar = () => {
                 strokeWidth={1.5}
                 stroke="currentColor"
                 className="size-6 cursor-pointer"
-                onClick={() => handleLogout()}
+                onClick={handleLogout}
               >
                 <path
                   strokeLinecap="round"
@@ -317,7 +320,13 @@ const Navbar = () => {
           >
             Sản phẩm
           </NavLink>
-        
+          <NavLink
+            onClick={() => setVisible(false)}
+            className="py-2 pl-6 border"
+            to="/about"
+          >
+            Về chúng tôi
+          </NavLink>
           <NavLink
             onClick={() => setVisible(false)}
             className="py-2 pl-6 border"
@@ -325,7 +334,7 @@ const Navbar = () => {
           >
             Liên hệ
           </NavLink>
-          {authState._id ? (
+          {authState?._id ? (
             <>
               <NavLink
                 onClick={() => setVisible(false)}
@@ -341,22 +350,8 @@ const Navbar = () => {
               >
                 Thanh toán
               </NavLink>
-                <NavLink
-                  onClick={() => setVisible(false)}
-                  className="py-2 pl-6 border"
-                  to="/account/orders"
-                >
-                  Đơn hàng
-                </NavLink>
-                <NavLink
-                  onClick={() => setVisible(false)}
-                  className="py-2 pl-6 border"
-                  to="/account"
-                >
-                  Hồ sơ
-                </NavLink>
               <NavLink
-                onClick={() => handleLogout()}
+                onClick={handleLogout}
                 className="py-2 pl-6 border"
                 to="/login"
               >
