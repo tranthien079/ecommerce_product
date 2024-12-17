@@ -118,10 +118,10 @@ const StorePage = () => {
                             ? "text-blue-600 font-semibold"
                             : "text-gray-600"
                         }`}
-                        onClick={() =>
-                          category?.id === item._id
-                            ? setCategory(null)
-                            : setCategory({ id: item._id, name: item.name })
+                        onClick={() => 
+                          category?.id === item._id 
+                            ? (setCategory(null), setPage(1)) 
+                            : (setCategory({ id: item._id, name: item.name }), setPage(1))
                         }
                       >
                         {item.name}
@@ -145,10 +145,10 @@ const StorePage = () => {
                             ? "text-blue-600 font-semibold"
                             : "text-gray-600"
                         }`}
-                        onClick={() =>
+                       onClick={() =>
                           brand?.id === item._id
-                            ? setBrand(null)
-                            : setBrand({ id: item._id, name: item.name })
+                            ?  (setBrand(null), setPage(1)) 
+                            : (setBrand({ id: item._id, name: item.name }), setPage(1)) 
                         }
                       >
                         {item.name}
