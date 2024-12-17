@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Collection from "./pages/Collection";
 import About from "./pages/About";
@@ -38,6 +38,8 @@ import CheckoutPolicy from "./pages/CheckoutPolicy";
 
 const App = () => {
   const userState = useSelector((state) => state.auth.user);
+    const location = useLocation();
+  const isChatPage = location.pathname === "/chat";
   return (
     
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
@@ -75,7 +77,7 @@ const App = () => {
 
 
       </Routes>
-      <Footer />
+      {!isChatPage && <Footer />} 
     </ChatContextProvider>
     </div>
   );
