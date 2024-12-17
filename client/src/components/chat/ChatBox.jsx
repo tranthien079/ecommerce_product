@@ -31,7 +31,7 @@ const ChatBox = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full chat-box max-h-[70vh]">
-      <div className="chat-header font-bold text-center">
+     <div className="chat-header font-bold text-center border-b-2 pb-2 text-white">
         {recipientUser?.firstname} {recipientUser?.lastname}
       </div>
       <div className="messages flex flex-col gap-3 overflow-y-auto h-[70vh]">
