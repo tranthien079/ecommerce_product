@@ -41,6 +41,7 @@ const AddCategoryPage = () => {
   useEffect(() => {
     if (isSuccess && createdCategory) {
       form.resetFields();
+      dispatch(resetState());
       toast.success('Thêm danh mục sản phẩm thành công');
       navigate('/sale/categories');
 
