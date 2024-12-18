@@ -25,7 +25,6 @@ const OrderPage = () => {
       status: value,
     };
    await dispatch(updateOrderStatus(data));
-   toast.success('Cập nhật trạng thái đơn hàng thành công')
    await dispatch(getOrder());
   };
 
