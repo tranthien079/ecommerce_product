@@ -20,7 +20,7 @@ const CategoryPage = () => {
   const handleDelete = async (record) => {
     try {
       await dispatch(deleteCategory(record._id)).unwrap();
-      toast.success('Xóa thương hiệu thành công');
+      toast.success('Xóa danh mục sản phẩm thành công');
       dispatch(getCategory());
     } catch (error) {
       console.log(error)
