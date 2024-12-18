@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import { getOrderDetailApi, getOrders, updateOrderStatusApi } from "../../api/auth";
+import { toast } from "react-toastify";
 
 const initialState = {
   orders: [],
@@ -94,6 +95,8 @@ export const orderSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.updatedOrder = action.payload;
+       toast.success('Cập nhật trạng thái đơn hàng thành công')
+        
       })
       .addCase(updateOrderStatus.rejected, (state, action) => {
         state.isLoading = false;
