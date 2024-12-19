@@ -35,7 +35,9 @@ const ChatBox = () => {
         {recipientUser?.firstname} {recipientUser?.lastname}
       </div>
       <div className="messages flex flex-col gap-3 overflow-y-auto h-[70vh]">
-        {messages.map((message, index) => {
+        {messages
+          .filter((message) => message.text) 
+          .map((message, index) => {
           const isLastMessage = index === messages.length - 1; 
 
           return (
