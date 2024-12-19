@@ -3,7 +3,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+.word-break {
+  word-wrap: break-word; 
+  word-break: break-word; 
+  overflow-wrap: anywhere; 
+}
 a.active hr{
     display: block;
 }
