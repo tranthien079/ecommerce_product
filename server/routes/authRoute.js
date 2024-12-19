@@ -33,7 +33,7 @@ router.put('/update-order/:id', authMiddleWare, updateOrderStatus)
 router.get('/find/:userId', findUser)
 router.get('/get-all-user', getAllUsers)
 router.get('/', getUsersSale)
-
+router.get('/get-employees', getUsers)
 router.post('/login', loginUser)
 router.post('/send-mail', sendMailContact);
 router.post('/save-address', authMiddleWare, createAddressUser)
