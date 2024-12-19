@@ -20,7 +20,7 @@ const UserChat = ({ chat, user }) => {
   );
 
   const truncateText = (text) => {
-    let shortText = text.substring(0, 20);
+    let shortText = text.substring(0, 15);
     if (text.length > 20) {
       shortText += "...";
     }
