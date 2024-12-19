@@ -110,15 +110,11 @@ const Navbar = () => {
 
       <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
         <NavLink to="/" className="flex flex-col items-center gap-1 font-semibold">
-          <p>HOME</p>
+          <p>TRANG CHỦ</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
         </NavLink>
         <NavLink to="/collection" className="flex flex-col items-center gap-1 font-semibold">
           <p>SẢN PHẨM</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
-        </NavLink>
-        <NavLink to="/about" className="flex flex-col items-center gap-1 font-semibold">
-          <p>VỀ CHÚNG TÔI</p>
           <hr className="w-2/4 border-none h-[1.5px] bg-gray-700" />
         </NavLink>
         <NavLink to="/contact" className="flex flex-col items-center gap-1 font-semibold">
@@ -320,13 +316,7 @@ const Navbar = () => {
           >
             Sản phẩm
           </NavLink>
-          <NavLink
-            onClick={() => setVisible(false)}
-            className="py-2 pl-6 border"
-            to="/about"
-          >
-            Về chúng tôi
-          </NavLink>
+         
           <NavLink
             onClick={() => setVisible(false)}
             className="py-2 pl-6 border"
