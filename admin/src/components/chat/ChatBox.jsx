@@ -43,8 +43,8 @@ const ChatBox = () => {
               key={index}
               className={`${
                 message?.senderId === userState?._id
-                  ? "message self bg-blue-500 self-end text-white rounded-lg p-2"
-                  : "message bg-gray-300  self-start  text-black rounded-lg p-2"
+                  ? "message self bg-blue-500 self-end text-white rounded-lg p-2 word-break"
+                  : "message bg-gray-300  self-start  text-black rounded-lg p-2 word-break"
               } max-w-xs`}
               ref={isLastMessage ? scroll : null} 
             >
