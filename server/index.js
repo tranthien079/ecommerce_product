@@ -45,10 +45,7 @@ app.use('/api/receipt', receiptRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/chats', chatRoute)
 app.use('/api/messages/', messageRoute)
-app.post('/receive-hook', async (req, res) => {
-    console.log(req.body)
-    res.json();
-})
+
 
 
 app.use(notFound);
